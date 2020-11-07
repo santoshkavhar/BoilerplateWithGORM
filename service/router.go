@@ -24,5 +24,7 @@ func InitRouter(deps Dependencies) (router *mux.Router) {
 	v1 := fmt.Sprintf("application/vnd.%s.v1", config.AppName())
 
 	router.HandleFunc("/product", listProductHandler(deps)).Methods(http.MethodGet).Headers(versionHeader, v1)
+	router.HandleFunc("/product", createProductHandler(deps)).Methods(http.MethodPost).Headers(versionHeader, v1)
+
 	return
 }
