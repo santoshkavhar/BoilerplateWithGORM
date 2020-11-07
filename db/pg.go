@@ -1,20 +1,18 @@
 package db
 
 import (
-	"database/sql"
 	"errors"
-	"fmt"
-	"joshsoftware/golang-boilerplate/config"
-	"os"
-	"strconv"
-	"time"
+	"santoshkavhar/BoilerplateWithGORM/config"
 
-	"github.com/jmoiron/sqlx"
-	_ "github.com/lib/pq"
-	"github.com/mattes/migrate"
-	"github.com/mattes/migrate/database/postgres"
+	//_ "github.com/lib/pq"
+	//"github.com/mattes/migrate"
+
+	//"github.com/mattes/migrate/database/postgres"
+
 	_ "github.com/mattes/migrate/source/file"
 	logger "github.com/sirupsen/logrus"
+	"gorm.io/driver/postgres"
+	_ "gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
 
@@ -26,11 +24,12 @@ const (
 var errFindingDriver = errors.New("no migrate driver instance found")
 
 type pgStore struct {
-	db *sqlx.DB
+	db *gorm.DB
 }
 
 func Init() (s Storer, err error) {
 	uri := config.ReadEnvString("DB_URI")
+	//dsn := "user=gorm password=gorm dbname=gorm port=9920 sslmode=disable TimeZone=Asia/Shanghai"
 
 	conn, err := gorm.Open(postgres.Open(uri), &gorm.Config{})
 	if err != nil {
@@ -43,13 +42,17 @@ func Init() (s Storer, err error) {
 }
 
 func AutoMigrationing() (err error) {
+	uri := config.ReadEnvString("DB_URI")
+
 	db, err := gorm.Open(postgres.Open(uri), &gorm.Config{})
 	if err != nil {
 		panic("failed to connect database")
 	}
 	db.AutoMigrate(&Product{})
+	return nil
 }
 
+/*
 func RunMigrations() (err error) {
 	uri := config.ReadEnvString("DB_URI")
 
@@ -141,3 +144,5 @@ func createFile(filename string) (err error) {
 func getMigrationPath() string {
 	return fmt.Sprintf("file://%s", migrationPath)
 }
+
+*/

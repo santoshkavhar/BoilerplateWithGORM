@@ -5,10 +5,10 @@ package main
 
 import (
 	"fmt"
-	"joshsoftware/golang-boilerplate/config"
-	"joshsoftware/golang-boilerplate/db"
-	"joshsoftware/golang-boilerplate/service"
 	"os"
+	"santoshkavhar/BoilerplateWithGORM/config"
+	"santoshkavhar/BoilerplateWithGORM/db"
+	"santoshkavhar/BoilerplateWithGORM/service"
 	"strconv"
 
 	logger "github.com/sirupsen/logrus"
@@ -29,40 +29,35 @@ func main() {
 	cliApp.Version = "1.0.0"
 	cliApp.Commands = []cli.Command{
 		{
-			Name:  "automigrate",
-			Usage: "migrate the schema",
-			Action: func(c *cli.Context) error {
-				return db.AutoMigrationing()
-			},
-		},
-		{
 			Name:  "start",
 			Usage: "start server",
 			Action: func(c *cli.Context) error {
 				return startApp()
 			},
 		},
-		{
-			Name:  "create_migration",
-			Usage: "create migration file",
-			Action: func(c *cli.Context) error {
-				return db.CreateMigrationFile(c.Args().Get(0))
+		/*
+			{
+				Name:  "create_migration",
+				Usage: "create migration file",
+				Action: func(c *cli.Context) error {
+					return db.CreateMigrationFile(c.Args().Get(0))
+				},
 			},
-		},
-		{
-			Name:  "migrate",
-			Usage: "run db migrations",
-			Action: func(c *cli.Context) error {
-				return db.RunMigrations()
+			{
+				Name:  "migrate",
+				Usage: "run db migrations",
+				Action: func(c *cli.Context) error {
+					return db.RunMigrations()
+				},
 			},
-		},
-		{
-			Name:  "rollback",
-			Usage: "rollback migrations",
-			Action: func(c *cli.Context) error {
-				return db.RollbackMigrations(c.Args().Get(0))
+			{
+				Name:  "rollback",
+				Usage: "rollback migrations",
+				Action: func(c *cli.Context) error {
+					return db.RollbackMigrations(c.Args().Get(0))
+				},
 			},
-		},
+		*/
 	}
 
 	if err := cliApp.Run(os.Args); err != nil {

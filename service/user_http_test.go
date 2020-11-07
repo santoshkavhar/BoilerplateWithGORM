@@ -2,7 +2,7 @@ package service
 
 import (
 	"errors"
-	"joshsoftware/golang-boilerplate/db"
+	"santoshkavhar/BoilerplateWithGORM/db"
 	"net/http"
 	"net/http/httptest"
 	"strings"

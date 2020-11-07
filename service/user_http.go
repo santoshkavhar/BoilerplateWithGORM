@@ -7,24 +7,19 @@ import (
 	logger "github.com/sirupsen/logrus"
 )
 
-// @Title listUsers
+// @Title listProduct
 // @Description list all User
 // @Router /users [get]
 // @Accept  json
 // @Success 200 {object}
 // @Failure 400 {object}
-func listUsersHandler(deps Dependencies) http.HandlerFunc {
+func listProductHandler(deps Dependencies) http.HandlerFunc {
 	return http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
-		users, err := deps.Store.ListUsers(req.Context())
-		if err != nil {
-			logger.WithField("err", err.Error()).Error("Error fetching data")
-			rw.WriteHeader(http.StatusInternalServerError)
-			return
-		}
+		product := deps.Store.ListProduct(req.Context())
 
-		respBytes, err := json.Marshal(users)
+		respBytes, err := json.Marshal(product)
 		if err != nil {
-			logger.WithField("err", err.Error()).Error("Error marshaling users data")
+			logger.WithField("err", err.Error()).Error("Error marshaling product data")
 			rw.WriteHeader(http.StatusInternalServerError)
 			return
 		}
