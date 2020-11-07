@@ -29,6 +29,13 @@ func main() {
 	cliApp.Version = "1.0.0"
 	cliApp.Commands = []cli.Command{
 		{
+			Name:  "automigrate",
+			Usage: "migrate the schema",
+			Action: func(c *cli.Context) error {
+				return db.AutoMigrationing()
+			},
+		},
+		{
 			Name:  "start",
 			Usage: "start server",
 			Action: func(c *cli.Context) error {
@@ -73,6 +80,8 @@ func startApp() (err error) {
 	deps := service.Dependencies{
 		Store: store,
 	}
+
+	db.AutoMigrationing()
 
 	// mux router
 	router := service.InitRouter(deps)

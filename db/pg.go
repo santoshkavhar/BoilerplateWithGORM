@@ -15,6 +15,7 @@ import (
 	"github.com/mattes/migrate/database/postgres"
 	_ "github.com/mattes/migrate/source/file"
 	logger "github.com/sirupsen/logrus"
+	"gorm.io/gorm"
 )
 
 const (
@@ -31,7 +32,7 @@ type pgStore struct {
 func Init() (s Storer, err error) {
 	uri := config.ReadEnvString("DB_URI")
 
-	conn, err := sqlx.Connect(dbDriver, uri)
+	conn, err := gorm.Open(postgres.Open(uri), &gorm.Config{})
 	if err != nil {
 		logger.WithField("err", err.Error()).Error("Cannot initialize database")
 		return
@@ -39,6 +40,14 @@ func Init() (s Storer, err error) {
 
 	logger.WithField("uri", uri).Info("Connected to pg database")
 	return &pgStore{conn}, nil
+}
+
+func AutoMigrationing() (err error) {
+	db, err := gorm.Open(postgres.Open(uri), &gorm.Config{})
+	if err != nil {
+		panic("failed to connect database")
+	}
+	db.AutoMigrate(&Product{})
 }
 
 func RunMigrations() (err error) {
